@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import Placeholder from '@tiptap/extension-placeholder'
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import { Editor, EditorContent } from '@tiptap/vue-3'
@@ -83,9 +84,12 @@ export default {
             this.save();
         }, 1000);
         this.editor = new Editor({
-            content: this.write?.content || '',
+            content: this.write?.content,
             extensions: [
                 StarterKit,
+                Placeholder.configure({
+                    placeholder: 'Puedes empezar por aquí :-)',
+                }),
             ],
             onUpdate: () => {
                 this.state = 'unsaved';
