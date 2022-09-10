@@ -136,7 +136,7 @@ export default {
             return this.write?.stable_diffusion_result
         },
         canGenerateImages () {
-            return this.stableDiffusionResult?.status === 'succeeded' || this.stableDiffusionResult?.status === 'failed'
+            return !this.stableDiffusionResult || this.stableDiffusionResult?.status === 'succeeded' || this.stableDiffusionResult?.status === 'failed'
         },
     },
     methods: {
