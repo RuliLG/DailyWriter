@@ -6,6 +6,7 @@ use App\Actions\Ipfs\GetFromIpfs;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use RuliLG\StableDiffusion\Models\StableDiffusionResult;
 
 class Writing extends Model
 {
@@ -45,5 +46,10 @@ class Writing extends Model
         return Attribute::make(
             get: fn () => $this->word_count >= config('dailywriter.goal'),
         );
+    }
+
+    public function stable_diffusion_result()
+    {
+        return $this->belongsTo(StableDiffusionResult::class);
     }
 }

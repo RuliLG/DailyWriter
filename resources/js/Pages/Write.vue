@@ -35,8 +35,21 @@
                     <span v-if="state === 'saved'">Guardado</span>
                     <span>{{ numberOfWords }} {{ numberOfWords === 1 ? 'palabra' : 'palabras' }}</span>
                 </div>
-                <div class="text-right mt-4 print:hidden">
-                    <a v-if="write?.word_count > 0" :href="write.ipfs_link" target="_blank" class="text-sm text-green-dark">Ver en IPFS</a>
+                <div class="flex items-center justify-between my-4 print:hidden" v-if="write?.word_count > 0">
+                    <button type="button" v-if="canGenerateImages" @click="generateImages" class="text-sm text-green-dark">🎨 Generar imágenes</button>
+                    <span v-else class="text-sm text-grey-dark cursor-not-allowed">🎨 Generando imágenes</span>
+                    <a :href="write.ipfs_link" target="_blank" class="text-sm text-green-dark">Ver en IPFS</a>
+                </div>
+                <div v-if="stableDiffusionResult?.output" class="grid grid-cols-2 gap-4 pb-12 md:grid-cols-4 break-before-page">
+                    <div v-for="(image, index) in stableDiffusionResult.output" :key="index" class="aspect-square relative cursor-pointer" @click="openImage(index)">
+                        <img :src="image" class="absolute inset-0 object-cover object-center" />
+                    </div>
+                    <vue-easy-lightbox
+                        :visible="lightboxIsVisible"
+                        :imgs="stableDiffusionResult.output"
+                        :index="currentImageIndex"
+                        @hide="lightboxIsVisible = false"
+                    ></vue-easy-lightbox>
                 </div>
             </div>
         </div>
@@ -53,6 +66,8 @@ import DayEntry from '@/Components/DayEntry.vue'
 import PrintButton from '@/Components/PrintButton.vue'
 import dayjs from 'dayjs'
 import { debounce } from 'debounce'
+import VueEasyLightbox from 'vue-easy-lightbox'
+
 
 export default {
     name: 'Write',
@@ -63,6 +78,7 @@ export default {
         DayEntry,
         PrintButton,
         BreezeAuthenticatedLayout,
+        VueEasyLightbox,
     },
     props: {
         raw_date: String,
@@ -77,6 +93,9 @@ export default {
             didUpdate: null,
             editor: null,
             state: this.write ? 'saved' : 'none',
+            imageInterval: null,
+            lightboxIsVisible: false,
+            currentImageIndex: 0,
         }
     },
     mounted () {
@@ -113,6 +132,12 @@ export default {
         todayLink () {
             return dayjs().format('YYYYMMDD')
         },
+        stableDiffusionResult () {
+            return this.write?.stable_diffusion_result
+        },
+        canGenerateImages () {
+            return this.stableDiffusionResult?.status === 'succeeded' || this.stableDiffusionResult?.status === 'failed'
+        },
     },
     methods: {
         save () {
@@ -121,6 +146,7 @@ export default {
             this.$inertia.post('/write/' + this.raw_date, {
                 content: this.editor.getHTML(),
             }, {
+                preserveScroll: true,
                 onSuccess: () => {
                     this.state = this.editor.getHTML() === contentBefore ? 'saved' : 'unsaved';
                 },
@@ -128,7 +154,29 @@ export default {
         },
         didUpdateMonth($event) {
             this.$inertia.visit('/write/' + $event.target.value.replace('-', '') + '01')
-        }
+        },
+        generateImages() {
+            this.$inertia.post('/write/' + this.raw_date + '/stable-diffusion', {}, {
+                preserveScroll: true,
+                onSuccess: () => {
+                    this.imageInterval = setInterval(() => {
+                        this.$inertia.get('/write/' + this.raw_date + '/stable-diffusion', {}, {
+                            preserveScroll: true,
+                            onSuccess: (response) => {
+                                const can = response.props.write?.stable_diffusion_result?.status === 'succeeded' || response.props.write?.stable_diffusion_result?.status === 'failed'
+                                if (can) {
+                                    clearInterval(this.imageInterval);
+                                }
+                            }
+                        })
+                    }, 5000);
+                },
+            })
+        },
+        openImage(index) {
+            this.currentImageIndex = index;
+            this.lightboxIsVisible = true;
+        },
     }
 }
 </script>

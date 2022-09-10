@@ -36,4 +36,13 @@ return [
         'secret' => env('INFURA_SECRET'),
         'endpoint' => env('INFURA_IPFS_ENDPOINT'),
     ],
+
+    'openai' => [
+        'token' => env('OPENAI_TOKEN'),
+        'model' => env('OPENAI_MODEL'),
+    ],
+
+    'deepl' => [
+        'token' => env('DEEPL_TOKEN'),
+    ],
 ];

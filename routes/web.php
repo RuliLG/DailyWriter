@@ -26,6 +26,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('write/{date}', [WriteController::class, 'render'])->name('write.date');
     Route::post('write/{date}', [WriteController::class, 'store'])->name('write.store');
+    Route::get('write/{date}/stable-diffusion', [WriteController::class, 'getImages'])->name('write.stable-diffusion');
+    Route::post('write/{date}/stable-diffusion', [WriteController::class, 'generateImages']);
 });
 
 require __DIR__.'/auth.php';
