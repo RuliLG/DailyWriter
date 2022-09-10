@@ -23,12 +23,12 @@ class GenerateWritingImages
                 Prompt::make()
                     ->with($prompt)
                     ->resolution8k()
-                    ->ambientLighting()
                     ->trendingOnArtStation()
                     ->photograph()
                     ->hyperrealistic()
                     ->digitalPaint()
                     ->postProcessing()
+                    ->octaneRender()
             )
             ->generate(4);
 
