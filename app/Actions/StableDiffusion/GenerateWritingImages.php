@@ -31,6 +31,8 @@ class GenerateWritingImages
                     ->postProcessing()
                     ->octaneRender()
             )
+            ->width(1024)
+            ->height(768)
             ->generate(4);
 
         $writing->stable_diffusion_result_id = $result->id;
