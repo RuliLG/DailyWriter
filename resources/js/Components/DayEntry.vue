@@ -12,7 +12,7 @@
         <span
             class="text-xs font-bold"
             :class="{
-                'underline': isToday,
+                'underline': selected || isToday,
             }"
         >
             {{ day }}
