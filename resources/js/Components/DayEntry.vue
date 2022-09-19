@@ -1,5 +1,6 @@
 <template>
     <Link
+        ref="link"
         :href="link"
         class="relative border rounded w-10 flex-shrink-0 flex flex-col justify-center items-center py-2 tabular-nums"
         :class="classes.join(' ')"
@@ -38,6 +39,15 @@ export default {
             type: Object,
         },
         selected: Boolean,
+    },
+    mounted () {
+        if (this.selected) {
+            this.$refs.link.$el.scrollIntoView({
+                behavior: 'auto',
+                block: 'center',
+                inline: 'center'
+            })
+        }
     },
     computed: {
         isToday () {
