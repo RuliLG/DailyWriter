@@ -18,7 +18,7 @@ Route::get('/', function () {
     return redirect()->to(route('write'));
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('write', function () {
         return redirect()->to(route('write.date', ['date' => today()->format('Ymd')]));
