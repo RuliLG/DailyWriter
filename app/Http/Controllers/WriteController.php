@@ -68,6 +68,12 @@ class WriteController extends Controller
     {
         $date = Carbon::createFromFormat('Ymd', $date);
         $write = $request->user()->writings()->whereDate('date', $date)->firstOrFail();
+        if ($write->word_count < config('dailywriter.goal')) {
+            return response()->json([
+                'message' => 'Word count is too low to generate images.',
+            ], 400);
+        }
+
         $write->load('stable_diffusion_result');
         GenerateWritingImages::run($write);
         return response()->json([
