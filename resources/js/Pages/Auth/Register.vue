@@ -50,7 +50,7 @@ const submit = () => {
 
                 <div class="block mt-4">
                     <label class="flex items-center">
-                        <BreezeCheckbox v-model:checked="form.terms" />
+                        <BreezeCheckbox required v-model:checked="form.terms" />
                         <span class="ml-2 text-sm text-gray-600">He leído y acepto los términos y condiciones</span>
                     </label>
                 </div>
