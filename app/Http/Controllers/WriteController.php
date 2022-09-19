@@ -19,6 +19,7 @@ class WriteController extends Controller
             ->whereDate('date', $date)
             ->first();
         if ($write) {
+            GetWritingImages::run($write);
             $write->load('stable_diffusion_result');
         }
 
@@ -69,6 +70,8 @@ class WriteController extends Controller
         $write = $request->user()->writings()->whereDate('date', $date)->firstOrFail();
         $write->load('stable_diffusion_result');
         GenerateWritingImages::run($write);
-        return $this->render($date->format('Ymd'), $request);
+        return response()->json([
+            'status' => 'pending',
+        ]);
     }
 }

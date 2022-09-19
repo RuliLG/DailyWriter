@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('hash');
             $table->unsignedInteger('word_count');
             $table->timestamps();
+
+            $table->unique(['user_id', 'date']);
         });
     }
 

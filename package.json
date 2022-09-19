@@ -26,6 +26,8 @@
         "@tiptap/vue-3": "^2.0.0-beta.96",
         "dayjs": "^1.11.5",
         "debounce": "^1.2.1",
+        "js-confetti": "^0.10.2",
+        "sweetalert2": "^11.4.33",
         "vue-easy-lightbox": "^1.8.2"
     }
 }
