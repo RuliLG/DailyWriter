@@ -45,4 +45,8 @@ return [
     'deepl' => [
         'token' => env('DEEPL_TOKEN'),
     ],
+
+    'stripe' => [
+        'monthly_plan' => env('STRIPE_MONTHLY_PLAN'),
+    ],
 ];

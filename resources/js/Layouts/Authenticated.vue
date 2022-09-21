@@ -32,12 +32,8 @@ const showingNavigationDropdown = ref(false);
                                 Escribir
                             </BreezeNavLink>
 
-                            <BreezeNavLink :href="route('write')" :active="route().current('stats') || route().current('stats.date')">
-                                Estadísticas
-                            </BreezeNavLink>
-
-                            <BreezeNavLink :href="route('write')" :active="route().current('print') || route().current('print')">
-                                Imprimir
+                            <BreezeNavLink v-if="!$page.props.auth.subscribed" :href="route('subscribe.landing')" :active="route().current('subscribe.landing')">
+                                Suscribirme
                             </BreezeNavLink>
                         </div>
 
@@ -54,8 +50,14 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
+                                        <a v-if="!$page.props.auth.subscribed" :href="route('subscribe.landing')" class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
+                                            Suscribirme
+                                        </a>
+                                        <a :href="route('billing-portal')" class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
+                                            Portal de suscripción
+                                        </a>
                                         <BreezeDropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
+                                            Cerrar sesión
                                         </BreezeDropdownLink>
                                     </template>
                                 </BreezeDropdown>

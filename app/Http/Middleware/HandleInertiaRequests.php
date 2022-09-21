@@ -37,6 +37,8 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
+                'subscribed' => $request->user()?->subscribed() ?? false,
+                'on_trial_or_subscribed' => $request->user()?->on_trial_or_subscribed ?? false,
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
@@ -44,6 +46,10 @@ class HandleInertiaRequests extends Middleware
                 ]);
             },
             'goal' => config('dailywriter.goal'),
+            'paywall' => [
+                'title' => $request->user()?->subscription_status?->paywallTitle(),
+                'text' => $request->user()?->subscription_status?->paywallText(),
+            ],
         ]);
     }
 }
