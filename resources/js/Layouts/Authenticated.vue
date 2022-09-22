@@ -32,6 +32,10 @@ const showingNavigationDropdown = ref(false);
                                 Escribir
                             </BreezeNavLink>
 
+                            <a href="https://dailywriterme.substack.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center p-4 text-sm font-medium text-primary-1000 hover:bg-yellow focus:outline-none focus:bg-yellow-700 transition duration-150 ease-in-out">
+                                Blog
+                            </a>
+
                             <BreezeNavLink v-if="!$page.props.auth.subscribed" :href="route('subscribe.landing')" :active="route().current('subscribe.landing')">
                                 Suscribirme
                             </BreezeNavLink>
@@ -82,6 +86,15 @@ const showingNavigationDropdown = ref(false);
                         <BreezeResponsiveNavLink :href="route('write')" :active="route().current('write')">
                             Dashboard
                         </BreezeResponsiveNavLink>
+                        <a href="https://dailywriterme.substack.com/" target="_blank" rel="noopener noreferrer" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
+                            Blog
+                        </a>
+                        <BreezeResponsiveNavLink v-if="!$page.props.auth.subscribed" :href="route('subscribe.landing')" :active="route().current('subscribe.landing')">
+                            Suscribirme
+                        </BreezeResponsiveNavLink>
+                        <a :href="route('billing-portal')" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
+                            Portal de suscripción
+                        </a>
                     </div>
 
                     <!-- Responsive Settings Options -->
