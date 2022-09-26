@@ -25,7 +25,12 @@ const submit = () => {
         <template #banner>
             <Card class="relative w-full max-w-2xl">
                 <h2 class="text-2xl text-green-dark font-bold">¿Necesitas inspiración?</h2>
-                <p class="text-green-dark text-xl mt-4">Nam id dignissim purus, sit amet posuere est. Vivamus sit amet eros ut nulla ornare fermentum eu eget nisi. Aliquam erat volutpat. Nam congue dapibus vestibulum. Donec in aliquet diam, at semper arcu. Pellentesque consectetur tellus sollicitudin feugiat porta. Donec in ex congue, euismod arcu vitae, consectetur turpis.</p>
+                <p class="text-green-dark text-xl mt-4">
+                    500 palabras (2 páginas) diarias.<br />
+                    La técnica The Morning Pages es un ejercicio de autoconocimiento y desbloqueo. Se diseñó originalmente para ayudar a los artistas para superar sus bloqueos creativos. Sin embargo este hábito diario es valioso para todos los aspectos de la vida, desde el matrimonio hasta la crianza de los hijos y los factores estresantes diarios relacionados con el trabajo. Cualquiera puede comenzar a escribir "Morning Page´s para inyectar claridad, enfoque y dirección en sus vidas. <br />
+                    500 palabras a diario supone que en 40 días podrías tener tu libro de 20.000 palabras. <br /><br />
+                    Queremos acompañarte en el camino.
+                </p>
             </Card>
         </template>
         <template #default>
