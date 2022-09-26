@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Actions\Mailjet\UpsertContact;
 use App\Enums\SubscriptionStatus;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -25,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'trial_ends_at',
+        'mailjet_id',
     ];
 
     /**
@@ -58,17 +60,19 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected static function booted()
     {
-        static::created(queueable(function ($customer) {
-            $customer->createAsStripeCustomer();
+        static::created(queueable(function (User $user) {
+            $user->createAsStripeCustomer();
+            UpsertContact::dispatch($user);
         }));
 
-        static::updated(queueable(function ($customer) {
-            if ($customer->hasStripeId()) {
-                $customer->syncStripeCustomerDetails();
+        static::updated(queueable(function (User $user) {
+            if ($user->hasStripeId()) {
+                $user->syncStripeCustomerDetails();
             }
+
+            UpsertContact::dispatch($user);
         }));
     }
-
 
     public function writings()
     {
@@ -107,6 +111,20 @@ class User extends Authenticatable implements MustVerifyEmail
 
                 return SubscriptionStatus::trialEnded;
             }
+        );
+    }
+
+    public function name(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->email
+        );
+    }
+
+    public function isExcludedFromCampaigns(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => false,
         );
     }
 }

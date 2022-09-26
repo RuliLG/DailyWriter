@@ -49,4 +49,10 @@ return [
     'stripe' => [
         'monthly_plan' => env('STRIPE_MONTHLY_PLAN'),
     ],
+
+    'mailjet' => [
+        'key' => env('MAILJET_APIKEY'),
+        'secret' => env('MAILJET_APISECRET'),
+        'list_id' => env('MAILJET_LIST_ID'),
+    ],
 ];
