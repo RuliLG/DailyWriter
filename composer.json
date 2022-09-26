@@ -17,6 +17,7 @@
         "php-science/textrank": "^1.2",
         "rulilg/laravel-stable-diffusion": "^1.0",
         "spatie/laravel-stripe-webhooks": "^3.2",
+        "symfony/http-client": "^6.1",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

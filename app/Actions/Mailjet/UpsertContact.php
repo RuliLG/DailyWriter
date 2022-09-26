@@ -27,15 +27,19 @@ class UpsertContact
                 // ... content not changed
             }
         } else {
-            $response = Mailjet::createContact([
-                'Name' => $user->name,
-                'Email' => $user->email,
-                'IsExcludedFromCampaigns' => $user->is_excluded_from_campaigns ?? false,
-            ]);
+            try {
+                $response = Mailjet::createContact([
+                    'Name' => $user->name,
+                    'Email' => $user->email,
+                    'IsExcludedFromCampaigns' => $user->is_excluded_from_campaigns ?? false,
+                ]);
 
-            $response = $response->getData();
-            if (isset($response[0])) {
-                $response = $response[0];
+                $response = $response->getData();
+                if (isset($response[0])) {
+                    $response = $response[0];
+                }
+            } catch (\Exception $e) {
+
             }
 
             if (! isset($response['ID'])) {
@@ -46,9 +50,13 @@ class UpsertContact
             $user->save();
         }
 
-        Mailjet::createListRecipient([
-            'ContactID' => $user->mailjet_id,
-            'ListID' => config('services.mailjet.list_id'),
-        ]);
+        try {
+            Mailjet::createListRecipient([
+                'ContactID' => $user->mailjet_id,
+                'ListID' => config('services.mailjet.list_id'),
+            ]);
+        } catch (\Exception $e) {
+
+        }
     }
 }
