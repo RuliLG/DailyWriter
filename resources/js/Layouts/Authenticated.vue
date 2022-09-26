@@ -36,6 +36,10 @@ const showingNavigationDropdown = ref(false);
                                 Blog
                             </a>
 
+                            <a href="https://discord.gg/4PTc5FzPHj" target="_blank" rel="noopener noreferrer" class="inline-flex items-center p-4 text-sm font-medium text-primary-1000 hover:bg-yellow focus:outline-none focus:bg-yellow-700 transition duration-150 ease-in-out">
+                                Discord
+                            </a>
+
                             <BreezeNavLink v-if="!$page.props.auth.subscribed" :href="route('subscribe.landing')" :active="route().current('subscribe.landing')">
                                 Suscribirme
                             </BreezeNavLink>
@@ -88,6 +92,9 @@ const showingNavigationDropdown = ref(false);
                         </BreezeResponsiveNavLink>
                         <a href="https://dailywriterme.substack.com/" target="_blank" rel="noopener noreferrer" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
                             Blog
+                        </a>
+                        <a href="https://discord.gg/4PTc5FzPHj" target="_blank" rel="noopener noreferrer" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
+                            Discord
                         </a>
                         <BreezeResponsiveNavLink v-if="!$page.props.auth.subscribed" :href="route('subscribe.landing')" :active="route().current('subscribe.landing')">
                             Suscribirme
