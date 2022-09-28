@@ -41,16 +41,18 @@
                     <span v-else class="text-sm text-grey-dark cursor-not-allowed">🎨 Generando imágenes</span>
                     <a :href="write.ipfs_link" target="_blank" class="text-sm text-green-dark">Ver en IPFS</a>
                 </div>
-                <div v-if="stableDiffusionResult?.output" class="grid grid-cols-2 gap-4 pb-12 md:grid-cols-4 break-before-page">
-                    <div v-for="(image, index) in stableDiffusionResult.output" :key="index" class="aspect-square relative cursor-pointer" @click="openImage(index)">
-                        <img :src="image" class="absolute inset-0 object-cover object-center" />
+                <div v-show="stableDiffusionResult?.output" class="break-before-page" ref="images">
+                    <div v-if="stableDiffusionResult?.output" class="grid grid-cols-2 gap-4 pb-12 md:grid-cols-4">
+                        <div v-for="(image, index) in stableDiffusionResult.output" :key="index" class="aspect-square relative cursor-pointer" @click="openImage(index)">
+                            <img :src="image" class="absolute inset-0 object-cover object-center" />
+                        </div>
+                        <vue-easy-lightbox
+                            :visible="lightboxIsVisible"
+                            :imgs="stableDiffusionResult.output"
+                            :index="currentImageIndex"
+                            @hide="lightboxIsVisible = false"
+                        ></vue-easy-lightbox>
                     </div>
-                    <vue-easy-lightbox
-                        :visible="lightboxIsVisible"
-                        :imgs="stableDiffusionResult.output"
-                        :index="currentImageIndex"
-                        @hide="lightboxIsVisible = false"
-                    ></vue-easy-lightbox>
                 </div>
             </div>
         </div>
@@ -116,7 +118,9 @@ export default {
                 this.state = 'unsaved';
                 this.didUpdate();
             }
-        })
+        });
+
+        setTimeout(() => this.editor.view.dom.focus(), 50)
     },
     beforeUnmount() {
         this.editor.destroy()
@@ -178,18 +182,18 @@ export default {
                         .then(response => response.json())
                         .then(() => {
                             this.imageInterval = setInterval(() => {
-                                this.$inertia.get('/write/' + this.raw_date, {}, {
-                                    preserveScroll: true,
-                                    onSuccess: async (response) => {
-                                        const can = response.props.write?.stable_diffusion_result?.status === 'succeeded' || response.props.write?.stable_diffusion_result?.status === 'failed'
+                                this.$inertia.reload({
+                                    only: ['write'],
+                                    onSuccess: async () => {
+                                        const can = this.write?.stable_diffusion_result?.status === 'succeeded' || this.write?.stable_diffusion_result?.status === 'failed'
                                         if (can) {
-                                            this.write.stable_diffusion_result = response.props.write.stable_diffusion_result
                                             clearInterval(this.imageInterval);
                                             await Swal.hideLoading();
                                             await Swal.close();
+                                            this.$refs.images.scrollIntoView({ behavior: 'smooth' });
                                         }
                                     }
-                                })
+                                });
                             }, 5000);
                         });
                 },
