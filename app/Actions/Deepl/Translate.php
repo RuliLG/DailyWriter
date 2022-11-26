@@ -27,7 +27,7 @@ class Translate
 
         $response = Http::withToken(config('services.deepl.token'), 'DeepL-Auth-Key')
             ->asForm()
-            ->post('https://api.deepl.com/v2/translate', $query)
+            ->post('https://api.deepl.com/v2/translate?' . http_build_query($query), $query)
             ->throw();
 
         $translation = new Translation;
