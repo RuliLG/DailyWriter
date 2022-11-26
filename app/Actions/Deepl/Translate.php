@@ -21,7 +21,7 @@ class Translate
         }
 
         $query = [
-            'text' => [$text],
+            'text' => $text,
             'target_lang' => 'EN',
         ];
 
